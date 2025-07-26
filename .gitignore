@@ -1,0 +1,34 @@
+# Build outputs
+result
+result-*
+
+# Nix build directories
+.direnv/
+
+# Editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Temporary files
+*.tmp
+*.bak
+
+# Secrets (if any)
+secrets/
+*.key
+*.pem
+
+# Cache directories
+.cache/
+__pycache__/
+*.pyc
+
+# Log files
+*.log
