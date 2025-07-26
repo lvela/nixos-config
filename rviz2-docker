@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+
+# Simple Docker RViz2 launcher
+# Usage: rviz2-docker [rviz2 arguments]
+
+DOCKER_IMAGE="osrf/ros:jazzy-desktop"
+
+# Setup X11
+xhost +local:docker &> /dev/null || true
+
+# Run RViz2 with arguments
+docker run -it --rm \
+    --network host \
+    --env="DISPLAY=$DISPLAY" \
+    --env="QT_X11_NO_MITSHM=1" \
+    --env="ROS_DOMAIN_ID=${ROS_DOMAIN_ID:-0}" \
+    --env="RMW_IMPLEMENTATION=${RMW_IMPLEMENTATION:-rmw_fastrtps_cpp}" \
+    --env="ROS_DISCOVERY_SERVER=${ROS_DISCOVERY_SERVER:-192.168.1.70:11811}" \
+    --env="ROS_SUPER_CLIENT=${ROS_SUPER_CLIENT:-true}" \
+    --volume="/tmp/.X11-unix:/tmp/.X11-unix:rw" \
+    --volume="/home/louis/nixos-config:/workspace:rw" \
+    --workdir="/workspace" \
+    --device="/dev/dri:/dev/dri" \
+    $DOCKER_IMAGE \
+    bash -c "source /opt/ros/jazzy/setup.bash && rviz2 $*"

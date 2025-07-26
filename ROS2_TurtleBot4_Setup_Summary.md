@@ -2,7 +2,7 @@
 
 ## 🎉 Setup Status: COMPLETE ✅
 
-Your ROS 2 Jazzy installation is now fully functional and ready for TurtleBot 4 development!
+Your ROS 2 Jazzy installation is fully functional with cross-system communication to TurtleBot 4!
 
 ## 📋 System Configuration
 
@@ -14,236 +14,471 @@ Your ROS 2 Jazzy installation is now fully functional and ready for TurtleBot 4 
 | **TurtleBot 4 IP** | 192.168.1.70 |
 | **ROS Domain ID** | 0 |
 | **RMW Implementation** | rmw_fastrtps_cpp |
+| **Discovery Mode** | Discovery Server (TurtleBot: 11811) |
 | **Python Version** | 3.12 |
 
-## 🔧 What Was Fixed
+## 🔧 Key Components Working
 
-### Original Issues Resolved:
-1. **Missing Python Dependencies**
-   - ❌ `No module named 'yaml'` → ✅ Added `python3Packages.pyyaml`
-   - ❌ `No module named 'numpy'` → ✅ Added `python3Packages.numpy`
-   - ❌ `No module named 'rosidl_parser'` → ✅ Added `rosPackages.jazzy.rosidl-parser`
-   - ❌ `No module named 'rpyutils'` → ✅ Added `rosPackages.jazzy.rpyutils`
-   - ❌ `No module named 'ament_index_python'` → ✅ Added `rosPackages.jazzy.ament-index-python`
+### Core Functionality
+- ✅ **ROS 2 Jazzy** - Full installation with all dependencies
+- ✅ **Cross-system Discovery** - Using TurtleBot's Discovery Server (192.168.1.70:11811)
+- ✅ **SSH Access** - Automated key-based authentication to TurtleBot
+- ✅ **Robot Control** - Real-time topic communication (`/cmd_vel`, `/odom`, `/scan`)
+- ✅ **Environment Management** - Automated ROS environment setup via NixOS
 
-2. **RMW Library Issues**
-   - ❌ `librmw_fastrtps_cpp.so: cannot open shared object file` → ✅ Added complete FastRTPS packages
-   - ❌ `librmw_dds_common__rosidl_typesupport_fastrtps_cpp.so` missing → ✅ Added `rmw-dds-common`
+### Major Issues Resolved
+1. **ROS Discovery Configuration** *(Fixed July 26, 2025)*
+   - ✅ Identified TurtleBot uses Discovery Server mode (`127.0.0.1:11811`)
+   - ✅ Configured host to use TurtleBot's Discovery Server (`192.168.1.70:11811`)
+   - ✅ Set `ROS_SUPER_CLIENT=true` for client mode
+   - ✅ Cross-system topic discovery now working with all TurtleBot topics visible
 
-3. **Environment Configuration**
-   - ✅ Fixed `PYTHONPATH`, `LD_LIBRARY_PATH`, `CMAKE_PREFIX_PATH`
-   - ✅ Set proper ROS environment variables
-   - ✅ Configured firewall for ROS multicast traffic
+2. **ROS 2 Dependencies** *(Resolved)*
+   - ✅ All Python dependencies installed (`pyyaml`, `numpy`, `psutil`)
+   - ✅ Complete ROS package set with message types and tools
+   - ✅ FastRTPS implementation configured
+   - ✅ ROS daemon working properly
 
-## 📦 Installed ROS Packages
+3. **SSH Integration** *(Automated)*
+   - ✅ Automated SSH key generation and deployment
+   - ✅ System-wide SSH configuration for TurtleBot access
+   - ✅ Helper scripts for easy connection and management
 
-### Core ROS Packages
-- `ros-core`, `ros-base`, `desktop`
-- `ros2cli`, `ros2launch`, `ros2run`, `ros2node`, `ros2topic`, `ros2service`, `ros2param`
-
-### Python Bindings
-- `rclpy`, `rclcpp`
-- `rosidl-runtime-py`, `rpyutils`, `ament-index-python`
-
-### Message Types
-- `std-msgs`, `geometry-msgs`, `sensor-msgs`, `nav-msgs`
-- `rcl-interfaces`, `builtin-interfaces`
-- `turtlebot4-msgs`, `nav2-msgs`
-
-### ROSIDL Support
-- `rosidl-default-runtime`, `rosidl-default-generators`
-- `rosidl-parser`, `rosidl-adapter`
-- Complete typesupport packages for C, C++, and FastRTPS
-
-### RMW Implementation
-- `rmw`, `rmw-implementation`, `rmw-fastrtps-cpp`
-- `rmw-dds-common`, `fastrtps`, `fastcdr`
-
-### Tools
-- `teleop-twist-keyboard`
+4. **Teleop Keyboard Control** *(Fixed & Tested July 26, 2025)*
+   - ✅ Identified TurtleBot 4 uses TwistStamped messages on `/cmd_vel`
+   - ✅ Configured teleop_twist_keyboard to use `/cmd_vel_unstamped` topic
+   - ✅ Created `turtlebot-teleop` helper script for easy control
+   - ✅ Added troubleshooting script for teleop issues
+   - ✅ **CONFIRMED WORKING**: Robot successfully responds to both direct commands and teleop keyboard control
 
 ## ✅ Current Working Status
 
-### Environment Variables
+### Core ROS Environment
 ```bash
 ROS_DISTRO=jazzy
 ROS_DOMAIN_ID=0
 RMW_IMPLEMENTATION=rmw_fastrtps_cpp
-AMENT_PREFIX_PATH=/run/current-system/sw
-ROS_VERSION=2
+ROS_DISCOVERY_SERVER=192.168.1.70:11811
+ROS_SUPER_CLIENT=true
+ROS_AUTOMATIC_DISCOVERY_RANGE=SUBNET
 ```
 
-### Python Imports
-All ROS Python modules import successfully:
-- ✅ `rclpy`
-- ✅ `std_msgs.msg`
-- ✅ `geometry_msgs.msg`
-- ✅ `rosidl_parser`
-- ✅ `rosidl_adapter`
+### Available TurtleBot Topics
+- ✅ **Navigation**: `/cmd_vel`, `/odom`, `/tf`, `/tf_static`
+- ✅ **Sensors**: `/scan` (LiDAR), `/imu`, `/battery_state`
+- ✅ **Camera**: `/oakd/rgb/preview/image_raw`, `/oakd/rgb/preview/camera_info`
+- ✅ **Robot State**: `/joint_states`, `/robot_description`, `/diagnostics`
+- ✅ **Control**: `/joy`, `/hmi/buttons`, `/hmi/led`
 
-### CLI Tools
-- ✅ `ros2 --help`
-- ✅ `ros2 node list`
-- ✅ `ros2 topic list`
-
-### Network Connectivity
-- ✅ TurtleBot 4 ping successful (192.168.1.70)
-- ✅ SSH port 22 open
-- ✅ Web interface port 8080 open
-
-### ROS Discovery
-- ✅ Local ROS nodes detected
-- ✅ ROS topics visible (`/parameter_events`, `/rosout`)
+### System Status
+- ✅ ROS daemon running successfully
+- ✅ Cross-system discovery working
+- ✅ SSH key authentication configured
+- ✅ Real-time data streaming from TurtleBot
+- ✅ Robot control commands working
+- ✅ **Teleop keyboard control CONFIRMED WORKING** - Robot moves with direct commands and keyboard input
 
 ## 🚀 Quick Start Guide
 
 ### 1. Connect to TurtleBot
 ```bash
-ssh ubuntu@192.168.1.70
-# Default password: turtlebot4
+# Using SSH alias (password-free)
+ssh turtlebot
+
+# Or using helper script
+turtlebot-connect
 ```
 
-### 2. Start TurtleBot ROS System
-On the TurtleBot:
+### 2. Verify ROS Communication
 ```bash
-ros2 launch turtlebot4_bringup standard.launch.py
-```
-
-### 3. Test Discovery
-Back on your host system:
-```bash
-ros2 node list
+# Check all available topics
 ros2 topic list
+
+# Monitor robot odometry
+ros2 topic echo /odom
+
+# Check battery status
+ros2 topic echo /battery_state
 ```
 
-### 4. Control the Robot
+### 3. Control the Robot
 
-#### Keyboard Control
+#### Keyboard Control (Fixed & Working!)
 ```bash
-ros2 run teleop_twist_keyboard teleop_twist_keyboard
+# Option 1: Use the new helper script (after rebuilding NixOS)
+turtlebot-teleop
+
+# Option 2: Manual command with proper topic remapping
+ros2 run teleop_twist_keyboard teleop_twist_keyboard --ros-args --remap cmd_vel:=/cmd_vel_unstamped
+
+# Option 3: Use troubleshooting script if issues occur
+./turtlebot-teleop-fix.sh
 ```
 
-#### Direct Commands
+#### Direct Commands (TurtleBot uses TwistStamped)
 ```bash
 # Move forward
-ros2 topic pub /cmd_vel geometry_msgs/msg/Twist \
-  '{linear: {x: 0.5}, angular: {z: 0.0}}'
-
-# Stop
-ros2 topic pub /cmd_vel geometry_msgs/msg/Twist \
-  '{linear: {x: 0.0}, angular: {z: 0.0}}'
+ros2 topic pub --once /cmd_vel geometry_msgs/msg/TwistStamped \
+  '{header: {frame_id: "base_link"}, twist: {linear: {x: 0.2}}}'
 
 # Turn left
-ros2 topic pub /cmd_vel geometry_msgs/msg/Twist \
-  '{linear: {x: 0.0}, angular: {z: 0.5}}'
+ros2 topic pub --once /cmd_vel geometry_msgs/msg/TwistStamped \
+  '{header: {frame_id: "base_link"}, twist: {angular: {z: 0.5}}}'
+
+# Stop
+ros2 topic pub --once /cmd_vel geometry_msgs/msg/TwistStamped \
+  '{header: {frame_id: "base_link"}, twist: {linear: {x: 0.0}, angular: {z: 0.0}}}'
 ```
 
-## 🌐 Web Interface
+### 4. Access Web Interface
+Open: **http://192.168.1.70:8080**
 
-Access the TurtleBot 4 web interface at: **http://192.168.1.70:8080**
+## � Configuration Details
 
-## 📁 Configuration Files
-
-### Main NixOS Configuration
+### NixOS Configuration
 - **File**: `hosts/beelink.nix`
 - **Flake**: `flake.nix` (uses `nix-ros-overlay`)
-- **Hardware**: `hardware/beelink-hardware.nix`
 
-### Key Configuration Sections
+### Key Settings
 ```nix
-# ROS environment setup
+# ROS environment
 environment.sessionVariables = {
   ROS_DOMAIN_ID = "0";
   RMW_IMPLEMENTATION = "rmw_fastrtps_cpp";
+  ROS_AUTOMATIC_DISCOVERY_RANGE = "SUBNET";
 };
 
-# Firewall configuration for ROS
+# Discovery Server configuration
+programs.bash.interactiveShellInit = ''
+  export ROS_DISCOVERY_SERVER="192.168.1.70:11811"
+  export ROS_SUPER_CLIENT="true"
+'';
+
+# Firewall for ROS communication
 networking.firewall = {
-  allowedTCPPorts = [ 22 8080 11311 ];
-  allowedUDPPorts = [ 7400 7401 7402 7403 ];
-  allowedUDPPortRanges = [
-    { from = 7400; to = 7499; }  # FastRTPS discovery
-  ];
+  allowedTCPPorts = [ 22 8080 ];  # SSH, TurtleBot web interface
+  allowedUDPPorts = [ 7400 7401 7402 7403 11811 ];  # FastRTPS + Discovery Server
+  allowedUDPPortRanges = [{ from = 7400; to = 7499; }];
 };
+```
+
+### SSH Configuration
+```bash
+# System-wide SSH config (/etc/ssh/ssh_config)
+Host turtlebot
+    HostName 192.168.1.70
+    User ubuntu
+    IdentityFile ~/.ssh/id_ed25519_turtlebot
+    IdentitiesOnly yes
 ```
 
 ## 🔍 Troubleshooting
 
-### Common Issues and Solutions
+### Common Issues
 
-1. **ROS Discovery Fails**
-   - Check `ROS_DOMAIN_ID` matches between systems
-   - Verify firewall allows UDP ports 7400-7499
-   - Ensure both systems are on the same network
+1. **No TurtleBot Topics Visible**
+   ```bash
+   # Check Discovery Server connection
+   export ROS_DISCOVERY_SERVER="192.168.1.70:11811"
+   export ROS_SUPER_CLIENT="true"
+   ros2 daemon stop && ros2 daemon start
+   ```
 
-2. **Import Errors**
-   - All dependencies are now installed
-   - If issues persist, rebuild: `sudo nixos-rebuild switch --flake .`
+2. **SSH Connection Issues**
+   ```bash
+   # Test SSH connectivity
+   turtlebot-ssh-setup test
+   
+   # Regenerate keys if needed
+   turtlebot-ssh-setup setup
+   ```
 
-3. **Connection Issues**
-   - Verify TurtleBot is powered on and connected to WiFi
-   - Check IP addresses with `ping 192.168.1.70`
-   - Ensure TurtleBot ROS system is running
+3. **Environment Issues**
+   ```bash
+   # Rebuild NixOS configuration
+   sudo nixos-rebuild switch --flake .
+   
+   # Check ROS environment
+   env | grep -E "(ROS|RMW)" | sort
+   ```
 
-4. **Command Timeouts**
-   - `ros2 topic pub` waiting for subscribers is normal when TurtleBot ROS isn't running
-   - Start TurtleBot ROS system first
+4. **Teleop Keyboard Not Working**
+   ```bash
+   # Use the correct topic remapping
+   ros2 run teleop_twist_keyboard teleop_twist_keyboard --ros-args --remap cmd_vel:=/cmd_vel_unstamped
+   
+   # Or use the helper script
+   turtlebot-teleop
+   
+   # Or run the troubleshooting script
+   ./turtlebot-teleop-fix.sh
+   ```
 
 ### Useful Commands
-
 ```bash
-# Check ROS environment
-env | grep -E "(ROS|AMENT|RMW)" | sort
-
-# Test ROS installation
-python3 test_ros_setup.py
-
-# Check network connectivity
-python3 test_turtlebot.py
-
-# Monitor topics
-ros2 topic echo /cmd_vel
-ros2 topic echo /odom
-
-# List all available topics
+# Monitor all topics
 ros2 topic list -t
 
-# Get topic info
+# Check topic details
 ros2 topic info /cmd_vel
+
+# Remote robot status
+ssh turtlebot 'systemctl status turtlebot4.service'
+
+# Real-time odometry
+ros2 topic echo /odom
+
+# Teleop with proper remapping (FIXED!)
+ros2 run teleop_twist_keyboard teleop_twist_keyboard --ros-args --remap cmd_vel:=/cmd_vel_unstamped
+
+# Quick teleop helper
+turtlebot-teleop
+
+# Teleop troubleshooting
+./turtlebot-teleop-fix.sh
 ```
 
-## 🎯 Next Steps for Development
+## 🎯 Development Examples
 
-1. **Sensor Integration**
-   - Camera feeds: `/camera/image_raw`
-   - Lidar data: `/scan`
-   - Odometry: `/odom`
+### TurtleBot 4 Teleop Solutions
+```bash
+# Method 1: Helper script (available after rebuilding NixOS)
+turtlebot-teleop
 
-2. **Navigation Setup**
-   - SLAM mapping
-   - Nav2 navigation stack
-   - Waypoint navigation
+# Method 2: Manual remapping (works immediately)
+ros2 run teleop_twist_keyboard teleop_twist_keyboard --ros-args --remap cmd_vel:=/cmd_vel_unstamped
 
-3. **Custom Node Development**
-   - Create Python/C++ ROS nodes
-   - Implement custom behaviors
-   - Sensor data processing
+# Method 3: Troubleshooting script (comprehensive solution)
+./turtlebot-teleop-fix.sh
 
-4. **Advanced Features**
-   - Multi-robot coordination
-   - Computer vision integration
-   - Machine learning applications
+# Method 4: Direct TwistStamped commands
+ros2 topic pub --once /cmd_vel geometry_msgs/msg/TwistStamped \
+  '{header: {frame_id: "base_link"}, twist: {linear: {x: 0.2}}}'
+```
 
-## 📚 Additional Resources
+### Basic Robot Control
+```python
+import rclpy
+from rclpy.node import Node
+from geometry_msgs.msg import TwistStamped
 
+class TurtleBotController(Node):
+    def __init__(self):
+        super().__init__('turtlebot_controller')
+        self.publisher = self.create_publisher(TwistStamped, '/cmd_vel', 10)
+        
+    def move_forward(self, speed=0.2):
+        msg = TwistStamped()
+        msg.header.frame_id = 'base_link'
+        msg.twist.linear.x = speed
+        self.publisher.publish(msg)
+
+# Usage: ros2 run your_package turtlebot_controller
+```
+
+### Sensor Data Monitoring
+```bash
+# Monitor LiDAR data
+ros2 topic echo /scan
+
+# Check robot odometry
+ros2 topic echo /odom
+
+# Monitor battery status
+ros2 topic echo /battery_state
+
+# Camera feed
+ros2 topic echo /oakd/rgb/preview/image_raw
+```
+
+### Next Development Steps
+1. **SLAM Mapping** ✅ - Create maps using SLAM toolbox (setup complete!)
+2. **Autonomous Navigation** - Implement waypoint navigation with Nav2
+3. **Computer Vision** - Process camera feeds for object detection
+4. **Custom Behaviors** - Develop application-specific robot behaviors
+
+## 🗺️ SLAM Mapping Guide - **READY FOR MAPPING!**
+
+### ✅ SLAM Status: Ready to Map
+Your system includes all necessary SLAM components! While RViz2 has graphics issues in NixOS, you can create maps using command-line tools and alternative visualization.
+
+### **Quick Start - Command Line SLAM (Recommended)**
+```bash
+# Terminal 1: Launch SLAM Toolbox
+ros2 launch slam_toolbox online_async_launch.py
+
+# Terminal 2: Control robot for mapping
+turtlebot-teleop
+# OR: Manual commands
+ros2 topic pub --once /cmd_vel geometry_msgs/msg/TwistStamped \
+  '{header: {frame_id: "base_link"}, twist: {linear: {x: 0.2}}}'
+
+# Terminal 3: Monitor mapping progress
+ros2 topic echo /map --once  # Check if map is being created
+ros2 topic list | grep map   # See map-related topics
+
+# Save map when complete
+ros2 service call /slam_toolbox/save_map slam_toolbox/srv/SaveMap \
+  "{name: {data: 'my_house_map'}}"
+```
+
+### **Alternative Visualization Options**
+
+#### 1. **RQt Graph Viewer** (Works in NixOS)
+```bash
+# View ROS topic graph and connections
+rqt_graph
+
+# Monitor topics with plots
+rqt_plot /scan/ranges[360]  # Monitor lidar data
+```
+
+#### 2. **Web-based Visualization**
+```bash
+# Use TurtleBot's built-in web interface
+# Open: http://192.168.1.70:8080
+# This includes robot status, camera feed, and basic mapping
+```
+
+#### 3. **Command Line Monitoring**
+```bash
+# Monitor real-time SLAM data
+ros2 topic echo /map_metadata    # Map info
+ros2 topic echo /scan           # LiDAR data
+ros2 topic hz /map              # Map update rate
+ros2 node list | grep slam      # SLAM nodes status
+```
+
+### **RViz2 Solution: Docker-based Visualization** 
+**✅ RECOMMENDED APPROACH**
+
+RViz2 has OGRE library hardcoded path issues in NixOS. The solution is to run RViz2 in Docker:
+
+```bash
+# Setup Docker RViz2 (one-time setup)
+./docker-rviz2-setup.sh
+
+# Option 1: Complete SLAM with Docker RViz2
+./docker-slam-complete.sh
+
+# Option 2: Just Docker RViz2 (if SLAM already running)
+./run-docker-rviz2.sh
+
+# Option 3: Simple Docker RViz2 command
+./rviz2-docker
+```
+
+**Benefits**:
+- ✅ Bypasses OGRE hardcoded path issues
+- ✅ Full graphics acceleration with native performance
+- ✅ Runs locally on Beelink (no remote X11 needed)
+- ✅ Same network as host (ROS discovery works perfectly)
+- ✅ Native ROS Jazzy environment in container
+
+### **Mapping Workflow - Docker RViz2** 
+1. **Setup Docker RViz2** (one-time): `./docker-rviz2-setup.sh`
+2. **Complete SLAM Session**: `./docker-slam-complete.sh`
+   - OR manually:
+     - Terminal 1: `ros2 launch slam_toolbox online_async_launch.py`
+     - Terminal 2: `./run-docker-rviz2.sh`
+3. **Move Robot**: Use `turtlebot-teleop` or manual commands
+4. **Monitor Progress**: RViz2 shows real-time mapping
+5. **Save Map**: `ros2 service call /slam_toolbox/save_map slam_toolbox/srv/SaveMap "{name: {data: 'my_house_map'}}"`
+
+### **Mapping Tips**
+- **Move slowly** through your house
+- **Cover all areas** systematically
+- **Return to starting point** for loop closure
+- **Monitor topics** to ensure SLAM is working
+- **Save multiple versions** of your map
+
+Your SLAM setup is complete and functional - you can create maps without RViz2!
+
+## 🎮 Teleop Keyboard Control - SOLVED!
+
+### The Problem
+TurtleBot 4 uses **TwistStamped messages** on `/cmd_vel`, but `teleop_twist_keyboard` publishes standard **Twist messages**. The TurtleBot has a `create3_republisher` that handles this conversion, but it requires the correct topic remapping.
+
+### The Solution
+The TurtleBot's `create3_republisher` remaps:
+- `/cmd_vel_unstamped` (Twist) → robot control  
+- `/cmd_vel` (TwistStamped) → robot control
+
+### Working Methods
+
+#### 1. Quick Fix (Use Right Now)
+```bash
+ros2 run teleop_twist_keyboard teleop_twist_keyboard --ros-args --remap cmd_vel:=/cmd_vel_unstamped
+```
+
+#### 2. Helper Script (After Rebuilding NixOS)
+```bash
+# Rebuild first to get the new command
+sudo nixos-rebuild switch --flake .
+
+# Then use the helper
+turtlebot-teleop
+```
+
+#### 3. Troubleshooting Script
+```bash
+# Comprehensive solution with diagnostics
+./turtlebot-teleop-fix.sh
+```
+
+#### 4. Manual TwistStamped Commands
+```bash
+# Move forward
+ros2 topic pub --once /cmd_vel geometry_msgs/msg/TwistStamped \
+  '{header: {frame_id: "base_link"}, twist: {linear: {x: 0.2}}}'
+
+# Turn left  
+ros2 topic pub --once /cmd_vel geometry_msgs/msg/TwistStamped \
+  '{header: {frame_id: "base_link"}, twist: {angular: {z: 0.5}}}'
+
+# Stop
+ros2 topic pub --once /cmd_vel geometry_msgs/msg/TwistStamped \
+  '{header: {frame_id: "base_link"}, twist: {linear: {x: 0.0}, angular: {z: 0.0}}}'
+```
+
+### Keyboard Controls
+Once teleop is running:
+- **i/j/k/l** - Move forward/left/right/backward  
+- **u/o/m/,** - Diagonal movements
+- **q/z** - Increase/decrease max speeds
+- **w/x** - Increase/decrease linear speed only
+- **e/c** - Increase/decrease angular speed only  
+- **Any other key** - STOP
+- **Ctrl+C** - Quit
+
+### Common Issues & Fixes
+
+**Topics Not Visible:**
+```bash
+ros2 daemon stop && ros2 daemon start
+ros2 topic list | grep cmd_vel
+```
+
+**TurtleBot Disconnected:**
+```bash
+ping 192.168.1.70
+ssh turtlebot 'systemctl status turtlebot4.service'
+```
+
+**Discovery Issues:**
+```bash
+export ROS_DISCOVERY_SERVER="192.168.1.70:11811"
+export ROS_SUPER_CLIENT="true"
+ros2 daemon stop && ros2 daemon start
+```
+
+## 📚 Resources
 - [TurtleBot 4 Documentation](https://turtlebot.github.io/turtlebot4-user-manual/)
 - [ROS 2 Jazzy Documentation](https://docs.ros.org/en/jazzy/)
 - [NixOS ROS Overlay](https://github.com/lopsided98/nix-ros-overlay)
 
 ---
 
-**Setup completed on**: July 20, 2025  
-**Total setup time**: Multiple iterations to resolve all dependencies  
-**Status**: ✅ Ready for robotics development!
-
+**Status**: ✅ **Ready for robotics development with full ROS 2 functionality!**  
+**Last Updated**: July 26, 2025  
 🤖 **Happy robot programming!**
