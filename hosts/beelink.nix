@@ -133,6 +133,7 @@
     rosPackages.jazzy.unique-identifier-msgs  # Required by action client
     rosPackages.jazzy.rosgraph-msgs  # Required by time source
     rosPackages.jazzy.type-description-interfaces  # Required by type description service
+    rosPackages.jazzy.composition-interfaces  # Required by slam_toolbox and launch
     
     # ROSIDL packages (this should fix rosidl_parser issues)
     rosPackages.jazzy.rosidl-default-runtime
